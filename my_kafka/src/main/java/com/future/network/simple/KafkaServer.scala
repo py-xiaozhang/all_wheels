@@ -12,6 +12,7 @@ object KafkaServer {
 
   def main(args: Array[String]): Unit = {
     init()
+    println("kafka初始化完成!")
     while (true){
       selector.select()
       val keys: util.Set[SelectionKey] = selector.selectedKeys()
@@ -39,8 +40,6 @@ object KafkaServer {
   def init(): Unit ={
     processHandler=Array(new ServerProcess)
     new Thread(processHandler(0)).start()
-
-
     val channel: ServerSocketChannel = ServerSocketChannel.open()
     channel.configureBlocking(false)
     channel.socket().bind(new InetSocketAddress("127.0.0.1",6666))

@@ -1,6 +1,6 @@
-package com.future.network.dataProcess.protocol
+package com.future.dataProcess.protocol
 
-import com.future.network.dataProcess.`type`.AllType
+import com.future.dataProcess.`type`.AllType
 
 class Feild(val name:String,
             val tp:AllType,

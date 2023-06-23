@@ -1,13 +1,14 @@
 package com.future.network.simple
 
-import com.future.network.dataProcess.protocol.KafkaRequest
+import com.future.dataProcess.KafkaApis
+import com.future.dataProcess.protocol.KafkaRequest
 import com.future.network.io.{KafkaChannel, NetworkReceive}
 
 import java.util
 import java.util.Map
 import java.util.concurrent.{ArrayBlockingQueue, ConcurrentHashMap}
 
-class RequestProess(stageReceive:ConcurrentHashMap[KafkaChannel,ArrayBlockingQueue[NetworkReceive]]) extends Runnable{
+class RequestProcess(stageReceive:ConcurrentHashMap[KafkaChannel,ArrayBlockingQueue[NetworkReceive]]) extends Runnable{
   var isClose=false
   override def run(): Unit ={
     while (!isClose){
@@ -19,9 +20,10 @@ class RequestProess(stageReceive:ConcurrentHashMap[KafkaChannel,ArrayBlockingQue
         while (!queue.isEmpty){
           val info: String = channel.getTransportLayer().getInfo()
           val receive: NetworkReceive = queue.poll()
-          // println(info+"\n"+new String(receive.buffer.array(),"utf-8"))
           //todo 解析请求
           val request = new KafkaRequest(receive.buffer)
+          println("接收到消息："+info+"\n"+request)
+          KafkaApis.handle(request)
         }
       }
     }

@@ -1,16 +1,29 @@
-package com.future.network.dataProcess.type;
-
-import jdk.nashorn.internal.objects.annotations.Property;
+package com.future.dataProcess.type;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 
 public enum AllType {
-    INT16(2,"INT16","",Integer.class),
-    INT32(4,"INT16","",Integer.class),
-    NULLABLE_STRING(4,"INT16","",String.class){
+    INT16(2,"INT16","",Short.class){
+        @Override
+        public Object getObj(String obj) {
+            return Short.parseShort(obj);
+        }
+    },
+    INT32(4,"INT32","",Integer.class){
+        @Override
+        public Object getObj(String obj) {
+            return Integer.parseInt(obj);
+        }
+    },
+    INT64(8,"INT64","",Long.class){
+        @Override
+        public Object getObj(String obj) {
+            return Long.parseLong(obj);
+        }
+    },
+    NULLABLE_STRING(4,"NULLABLE_STRING","",String.class){
         @Override
         public Object parse(ByteBuffer buffer) {
             int length = buffer.getInt();
@@ -33,12 +46,16 @@ public enum AllType {
     public Object parse(ByteBuffer buffer){
         byte[] data=new byte[bytes];
         buffer.get(data);
-        int tmp=0;
+        long tmp=0;
         for(int i=0;i<data.length;i++){
             //data[i]&0xFF 将有符号数转换成无符号数
             tmp+=((data[i]&0xFF)<<(8*(data.length-i-1)));
         }
-        return tmp;
+        return getObj(tmp+"");
+    }
+
+    public Object getObj(String obj){
+        return obj;
     }
 
     public static void main(String[] args) {

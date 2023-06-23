@@ -15,7 +15,7 @@ class KafkaSelect(selector: Selector,requestProessNums:Int) {
 
   def init()={
     requestProess=Array.fill(requestProessNums){
-      new Thread(new RequestProess(stageReceive))
+      new Thread(new RequestProcess(stageReceive))
     }
     for(i <-Range(0,requestProessNums)){
       requestProess(i).start()

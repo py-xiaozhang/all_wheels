@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.future.network.dataProcess.protocol;
+package com.future.dataProcess.protocol;
 
 //todo 直接用kafka源码
 
